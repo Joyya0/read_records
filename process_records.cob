@@ -24,19 +24,32 @@
        INPUT-OUTPUT SECTION. 
        FILE-CONTROL. 
            SELECT INPUT-FILE ASSIGN TO "records.txt"
-           ORGANIZATION IS SEQUENTIAL.
+           ORGANIZATION IS LINE SEQUENTIAL.
 
       * *****************************************************************
 
        DATA DIVISION.
-       FILE SECTION.
 
-       FD INPUT-FILE.
+       FILE SECTION.
+       FD INPUT-FILE
+           RECORDING MODE IS F
+           RECORD CONTAINS 80 CHARACTERS 
+           BLOCK CONTAINS 0 RECORDS 
+           LABEL RECORDS ARE STANDARD 
+           DATA RECORD IS STUDENT-REC.
+
+       01 STUDENT-REC.
+               05 STUDENT-ID   PIC 9(04).
+               05 NAME         PIC 9(20).
+               05 COURSE       PIC X(07).
+               05 CREDITS      PIC 9(01).
+      
        01 LINE-DATA PIC X(32).
        
 
        
        WORKING-STORAGE SECTION. 
+
        01 WS-COUNT PIC 9(5) VALUE 0.
        01 WS-FINISHED PIC X VALUE "N".
 
@@ -48,18 +61,17 @@
            OPEN INPUT INPUT-FILE 
 
            PERFORM UNTIL WS-FINISHED = "Y"
-              
+              ADD 1 TO WS-COUNT
               READ INPUT-FILE
+                 
                  AT END 
                     MOVE "Y" TO WS-FINISHED
                
                  NOT AT END 
-                    DISPLAY LINE-DATA 
-                    ADD 1 TO WS-COUNT
+                    DISPLAY "NAME: " NAME "| COURSE ENROLLED " COURSE
+                    " " CREDITS " CREDITS"
               END-READ
            END-PERFORM
-
-           DISPLAY "LINES: " WS-COUNT 
 
            CLOSE INPUT-FILE
            STOP RUN.
