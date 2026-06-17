@@ -21,16 +21,47 @@
        SOURCE-COMPUTER. IBM-3081.
        OBJECT-COMPUTER. IBM-3081.
       * *****************************************************************
+       INPUT-OUTPUT SECTION. 
+       FILE-CONTROL. 
+           SELECT INPUT-FILE ASSIGN TO "records.txt"
+           ORGANIZATION IS SEQUENTIAL.
+
+      * *****************************************************************
 
        DATA DIVISION.
+       FILE SECTION.
+
+       FD INPUT-FILE.
+       01 LINE-DATA PIC X(32).
+       
+
+       
        WORKING-STORAGE SECTION. 
-       01 ws-name PIC A(30) VALUE 'anna olson'.
-       01 ws-phone PIC 9(10) VALUE '2535146144'.
-       01 ws-voucher PIC x(5) VALUE 'A1234'.
+       01 WS-COUNT PIC 9(5) VALUE 0.
+       01 WS-FINISHED PIC X VALUE "N".
+
       * *****************************************************************
 
        PROCEDURE DIVISION.
-           DISPLAY ws-name.
+       
+       MAIN.
+           OPEN INPUT INPUT-FILE 
+
+           PERFORM UNTIL WS-FINISHED = "Y"
+              
+              READ INPUT-FILE
+                 AT END 
+                    MOVE "Y" TO WS-FINISHED
+               
+                 NOT AT END 
+                    DISPLAY LINE-DATA 
+                    ADD 1 TO WS-COUNT
+              END-READ
+           END-PERFORM
+
+           DISPLAY "LINES: " WS-COUNT 
+
+           CLOSE INPUT-FILE
            STOP RUN.
 
       * *****************************************************************
