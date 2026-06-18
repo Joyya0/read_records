@@ -4,6 +4,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "WindowBuilder",
+            "request": "launch",
+            "mainClass": "WindowBuilder",
+            "projectName": "read_records_1f5dd682"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",
