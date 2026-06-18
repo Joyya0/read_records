@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Controller",
+            "request": "launch",
+            "mainClass": "Controller",
+            "projectName": "read_records_1f5dd682"
+        },
+        {
             "type": "cobol",
             "request": "launch",
             "name": "COBOL (native): Launch",

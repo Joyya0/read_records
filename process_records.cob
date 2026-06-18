@@ -49,9 +49,8 @@
 
        
        WORKING-STORAGE SECTION. 
-
-       01 WS-COUNT PIC 9(5) VALUE 0.
        01 WS-FINISHED PIC X VALUE "N".
+           88 END-OF-FILE VALUE "Y".
 
       * *****************************************************************
 
@@ -61,15 +60,16 @@
            OPEN INPUT INPUT-FILE 
 
            PERFORM UNTIL WS-FINISHED = "Y"
-              ADD 1 TO WS-COUNT
               READ INPUT-FILE
                  
                  AT END 
-                    MOVE "Y" TO WS-FINISHED
+                    SET END-OF-FILE TO TRUE
                
                  NOT AT END 
-                    DISPLAY "NAME: " NAME "| COURSE ENROLLED " COURSE
-                    " " CREDITS " CREDITS"
+                 IF NAME NOT = SPACES
+                     DISPLAY "NAME: " NAME"| COURSE ENROLLED " COURSE
+                     " " CREDITS " CREDITS"
+                 END-IF
               END-READ
            END-PERFORM
 
