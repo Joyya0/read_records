@@ -141,32 +141,14 @@ public static void main(String[] args) {
                 return;
             }
 
-
+            
             String first_name = parts[0];
             String last_name = parts[1];
 
             String courseId = course.getText();
             String creditCount = credits.getText();
 
-
-
-            try {
-
-               statement.executeUpdate(
-                "INSERT INTO enrollments (first_name, last_name, credits, class_id) VALUES('" 
-                + first_name + "', '" 
-                + last_name + "', " 
-                + creditCount + ", '" 
-                + courseId + "')"
-            );
-
-                System.out.println("Added!");
-
-            } catch(SQLException ex) {
-
-                ex.printStackTrace();
-
-            }
+            RecordManager.addEnrollment(statement, first_name, last_name, creditCount, courseId);
 
         });
 
