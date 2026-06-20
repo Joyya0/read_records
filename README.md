@@ -1,7 +1,5 @@
-COBOL Practice
-- Reads student data from txt file
-- Prints formatted data
-Future Iterations:
-- Reads from Database
-- Evaluates eligibility
-- Simple frontend view
+Student Enrollment Manager
+- Takes a students enrollment info and stores it (SQLite)
+- View student's individual records
+-  Enter new enrollments (Swing)
+- COBOL checks if a requested enrollment is valid
