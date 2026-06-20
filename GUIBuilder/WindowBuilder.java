@@ -121,15 +121,31 @@ public static void main(String[] args) {
         );
 
         panel.add(submit);
+        /* 
+         JButton students = new JButton("View Students");
+
+            students.setBounds(300, 177, 130, 29);
+            students.setBackground(Color.decode("#ffffff"));
+            students.setForeground(Color.decode("#1b1b1b"));
+            students.setFont(CustomFontLoader.loadFont("./resources/fonts/Lexend.ttf", 14));
+            students.setBorder(new RoundedBorder(4, Color.decode("#626262"), 1));
+            students.setFocusPainted(false);
+
+            OnClickEventHelper.setOnClickColor(
+                students,
+                Color.decode("#c2c2c2"),
+                Color.decode("#ffffff")
+            );
+
+            panel.add(students);
+            */
+        
 
 
 
         statement.setQueryTimeout(30);
-
-
-        submit.addActionListener(e -> {
-
-            String fullName = name.getText().trim();
+        //data
+         String fullName = name.getText().trim();
 
             String[] parts = fullName.split(" ");
 
@@ -140,18 +156,23 @@ public static void main(String[] args) {
                 );
                 return;
             }
-
-            
+  
             String first_name = parts[0];
             String last_name = parts[1];
 
             String courseId = course.getText();
             String creditCount = credits.getText();
 
+
+
+        submit.addActionListener(e -> {
             RecordManager.addEnrollment(statement, first_name, last_name, creditCount, courseId);
-
         });
-
+        /* 
+        students.addActionListener(e ->{
+            ViewRecords.StudentClasses(statement, first_name + last_name);
+        });
+        */
 
 
         frame.addWindowListener(

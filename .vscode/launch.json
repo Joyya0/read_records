@@ -4,6 +4,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ViewRecords",
+            "request": "launch",
+            "mainClass": "ViewRecords",
+            "projectName": "read_records_1f5dd682"
+        },
+        {
+            "type": "java",
             "name": "WindowBuilder",
             "request": "launch",
             "mainClass": "WindowBuilder",

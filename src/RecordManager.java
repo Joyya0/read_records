@@ -1,6 +1,9 @@
 //import java.sql.ResultSet;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+
 
 public class RecordManager {    
         /*
@@ -75,6 +78,31 @@ public class RecordManager {
 
             }                         
 
+        }
+
+        public static void dataToTxt(String name, String course, int reqCredits, int totalCredits){
+            //TODO print to txt file to send to COBOL
+        }
+
+        public static int totalCredits(Statement statement, String name){
+            int totalCredits = 0;
+            try {
+            ResultSet rs = statement.executeQuery(
+            "SELECT credits FROM enrollments WHERE first_name || last_name = '" 
+            + name + "'" );
+            while(rs.next()) {
+
+                int credits = rs.getInt("credits");
+
+                totalCredits += credits;
+                return totalCredits;
+            }
+                 
+            } catch (SQLException e) {
+                 e.printStackTrace();
+            }
+        
+            return totalCredits;
         }
 
 
