@@ -2,7 +2,11 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Scanner;
+
 
 
 public class RecordManager {    
@@ -10,7 +14,7 @@ public class RecordManager {
             Updates all records with new enrollment
         */
         public static void addEnrollment(Statement statement, String first_name, 
-                                            String last_name, String credits, String courseId) {
+                                            String last_name, int credits, String courseId) {
             
                 addNewStudent(statement, first_name, last_name, 0, courseId);
                 
@@ -34,15 +38,16 @@ public class RecordManager {
           Updates student's personal record
         */
         public static void updateStudentRecord(Statement statement, String first_name, 
-                                            String last_name, String credits, String course) {
+                                            String last_name, int credits, String course) {
             try {
 
                 statement.executeUpdate(
-                    "INSERT INTO " 
+                    "INSERT OR IGNORE INTO " 
                     + first_name 
                     + last_name
                     + " (course, credits) VALUES('"
-                    + course + "', " + credits + ")"
+                    + course + "', " 
+                    + credits + ")"
                 );
 
                 System.out.println("Added!");
@@ -80,28 +85,38 @@ public class RecordManager {
 
         }
 
-        public static void dataToTxt(String name, String course, int reqCredits, int totalCredits){
+        public static void dataToTxt(Statement statement, String name, String course, int reqCredits){
             //TODO print to txt file to send to COBOL
+             PrintStream theO = null;
+             int totalCredits = getTotalCredits(statement, name);
+            try {
+             theO = new PrintStream(new File("request.txt"));
+            } catch (Exception e) {
+                System.out.print("Issue creating file.");
+            }
+           String output = name + " " + course + " " + reqCredits + " " + totalCredits;
+           theO.println(output);
         }
 
-        public static int totalCredits(Statement statement, String name){
+        public static int getTotalCredits(Statement statement, String name){
             int totalCredits = 0;
             try {
             ResultSet rs = statement.executeQuery(
-            "SELECT credits FROM enrollments WHERE first_name || last_name = '" 
-            + name + "'" );
+                "SELECT * FROM " + name
+            );
             while(rs.next()) {
 
                 int credits = rs.getInt("credits");
 
                 totalCredits += credits;
-                return totalCredits;
+                
             }
                  
             } catch (SQLException e) {
                  e.printStackTrace();
             }
-        
+
+            System.out.print("Credits: " + totalCredits);
             return totalCredits;
         }
 

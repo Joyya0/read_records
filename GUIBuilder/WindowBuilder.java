@@ -18,7 +18,7 @@ public static void main(String[] args) {
         );
 
         Statement statement = conn.createStatement();
-
+        RecordManager.getTotalCredits(statement, "AnnaOlson");
 
         JFrame frame = new JFrame("Add Enrollment");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,8 +144,10 @@ public static void main(String[] args) {
 
 
         statement.setQueryTimeout(30);
-        //data
-         String fullName = name.getText().trim();
+        
+        submit.addActionListener(e -> {
+
+            String fullName = name.getText().trim();
 
             String[] parts = fullName.split(" ");
 
@@ -156,17 +158,35 @@ public static void main(String[] args) {
                 );
                 return;
             }
-  
+
             String first_name = parts[0];
             String last_name = parts[1];
 
             String courseId = course.getText();
-            String creditCount = credits.getText();
+
+            int creditCount;
+
+            try {
+                creditCount = Integer.parseInt(credits.getText());
+            }
+            catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(
+                    frame,
+                    "Credits must be a number"
+                );
+                return;
+            }
 
 
+            RecordManager.dataToTxt(
+                statement, fullName, courseId, creditCount
+            );
 
-        submit.addActionListener(e -> {
-            RecordManager.addEnrollment(statement, first_name, last_name, creditCount, courseId);
+
+            RecordManager.addEnrollment(
+                statement, first_name, last_name, creditCount, courseId
+            );
+
         });
         /* 
         students.addActionListener(e ->{
