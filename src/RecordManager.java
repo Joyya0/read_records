@@ -94,8 +94,8 @@ public class RecordManager {
             } catch (Exception e) {
                 System.out.print("Issue creating file.");
             }
-           String output = name + " " + course + " " + reqCredits + " " + totalCredits;
-           theO.println(output);
+           String output = String.format("%-20s%-7s%-1d%-2d", name, course, reqCredits, totalCredits);
+           theO.println(output.toUpperCase());
         }
 
         public static int getTotalCredits(Statement statement, String name){

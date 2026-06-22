@@ -23,7 +23,8 @@
       * *****************************************************************
        INPUT-OUTPUT SECTION. 
        FILE-CONTROL. 
-           SELECT INPUT-FILE ASSIGN TO "records.txt"
+           SELECT INPUT-FILE
+           ASSIGN TO "request.txt"
            ORGANIZATION IS LINE SEQUENTIAL.
 
       * *****************************************************************
@@ -39,38 +40,51 @@
            DATA RECORD IS STUDENT-REC.
 
        01 STUDENT-REC.
-               05 STUDENT-ID   PIC 9(04).
-               05 NAME         PIC 9(20).
-               05 COURSE       PIC X(07).
-               05 CREDITS      PIC 9(01).
-      
-       01 LINE-DATA PIC X(32).
+           05 NAME         PIC A(20).
+           05 COURSE       PIC X(07).
+           05 CREDITS      PIC 9(01).
        
-
        
-       WORKING-STORAGE SECTION. 
+       WORKING-STORAGE SECTION.
+       
        01 WS-FINISHED PIC X VALUE "N".
            88 END-OF-FILE VALUE "Y".
+       
+       01 TOTALCREDITS PIC 99 VALUE 0.
+       01 UPCREDITS PIC 99 VALUE 0.
 
       * *****************************************************************
 
        PROCEDURE DIVISION.
        
        MAIN.
-           OPEN INPUT INPUT-FILE 
 
-           PERFORM UNTIL WS-FINISHED = "Y"
-              READ INPUT-FILE
-                 
-                 AT END 
-                    SET END-OF-FILE TO TRUE
-               
-                 NOT AT END 
-                 IF NAME NOT = SPACES
-                     DISPLAY "NAME: " NAME"| COURSE ENROLLED " COURSE
-                     " " CREDITS " CREDITS"
-                 END-IF
-              END-READ
+           OPEN INPUT INPUT-FILE
+       
+           PERFORM UNTIL END-OF-FILE
+       
+               READ INPUT-FILE
+       
+                   AT END
+                       SET END-OF-FILE TO TRUE
+       
+                   NOT AT END
+       
+                       ADD CREDITS TO TOTALCREDITS
+       
+                       MOVE TOTALCREDITS TO UPCREDITS
+       
+                       DISPLAY NAME
+                       DISPLAY COURSE
+                       DISPLAY "TOTAL: " UPCREDITS
+       
+                       IF UPCREDITS > 20
+                           DISPLAY 'ENROLLMENT OVERLOADED,'
+                           ' 20 CREDITS MAXIMUM'
+                       END-IF
+       
+               END-READ
+       
            END-PERFORM
 
            CLOSE INPUT-FILE
