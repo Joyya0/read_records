@@ -5,7 +5,14 @@ import java.sql.Statement;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 
 
@@ -94,7 +101,7 @@ public class RecordManager {
             } catch (Exception e) {
                 System.out.print("Issue creating file.");
             }
-           String output = String.format("%-20s%-7s%-1d%-2d", name, course, reqCredits, totalCredits);
+           String output = String.format("%-20s%-7s%-1d%2d", name, course, reqCredits, totalCredits);
            theO.println(output.toUpperCase());
         }
 
@@ -118,6 +125,41 @@ public class RecordManager {
 
             System.out.print("Credits: " + totalCredits);
             return totalCredits;
+        }
+
+        public static boolean fetchCobolResults() {
+            boolean isSuccess = false;
+            try {
+
+                ProcessBuilder pb =
+                    new ProcessBuilder("./process_records.exe");
+
+                Process process = pb.start();
+
+                // wait until COBOL finishes
+                process.waitFor();
+        
+
+                String result = Files.readString(
+                    Path.of("output.txt")
+                );
+                if(result.contains("OVERLOADED")){
+                    isSuccess = false;
+                } else {
+                    isSuccess = true;
+                }
+
+                JFrame frame = new JFrame();
+                JOptionPane.showMessageDialog(frame, result);
+                System.out.println(process.exitValue());
+
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+            return isSuccess;
         }
 
 

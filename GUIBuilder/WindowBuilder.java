@@ -175,16 +175,17 @@ public static void main(String[] args) {
                 );
                 return;
             }
-
-
+            RecordManager.dataToTxt(
+                statement, first_name + last_name, courseId, creditCount
+            );
+            boolean isSuccess = RecordManager.fetchCobolResults();
+            if(isSuccess){
             RecordManager.addEnrollment(
                 statement, first_name, last_name, creditCount, courseId
             );
             RecordManager.getTotalCredits(statement, first_name + last_name);
-            RecordManager.dataToTxt(
-                statement, first_name + last_name, courseId, creditCount
-            );
-
+             }
+            
         });
         /* 
         students.addActionListener(e ->{
