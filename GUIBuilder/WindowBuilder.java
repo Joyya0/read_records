@@ -18,7 +18,6 @@ public static void main(String[] args) {
         );
 
         Statement statement = conn.createStatement();
-        RecordManager.getTotalCredits(statement, "AnnaOlson");
 
         JFrame frame = new JFrame("Add Enrollment");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,7 +143,7 @@ public static void main(String[] args) {
 
 
         statement.setQueryTimeout(30);
-        
+
         submit.addActionListener(e -> {
 
             String fullName = name.getText().trim();
@@ -178,13 +177,12 @@ public static void main(String[] args) {
             }
 
 
-            RecordManager.dataToTxt(
-                statement, fullName, courseId, creditCount
-            );
-
-
             RecordManager.addEnrollment(
                 statement, first_name, last_name, creditCount, courseId
+            );
+            RecordManager.getTotalCredits(statement, first_name + last_name);
+            RecordManager.dataToTxt(
+                statement, first_name + last_name, courseId, creditCount
             );
 
         });
